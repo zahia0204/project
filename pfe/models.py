@@ -7,10 +7,9 @@ class User(AbstractUser):
         ("employee", "Employee"),
     ]
 
-    phone_number = models.CharField(max_length=15)  # N-Tel
+    phone_number = models.CharField(max_length=15)  
     role = models.CharField(max_length=10, choices=ROLE_CHOICES)
 
-    # Fix group and permission conflicts
     groups = models.ManyToManyField(Group, related_name="user_groups", blank=True)
     user_permissions = models.ManyToManyField(Permission, related_name="user_permissions", blank=True)
 
