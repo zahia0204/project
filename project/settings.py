@@ -29,7 +29,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'pfe',
+
 ]
+AUTH_USER_MODEL = 'pfe.User' 
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
