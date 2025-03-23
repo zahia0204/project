@@ -19,21 +19,6 @@ class User(AbstractUser):
     def __str__(self):
         return f"{self.get_role_display()}: {self.username}"
 
-class Region(models.Model):
-    REGION_CHOICES = [
-        ("Boufarik", "Boufarik"),
-        ("Mouzaia", "Mouzaia"),
-        ("Larbaa", "Larbaa"),
-        ("OuladYaich", "Oulad Yaich"),
-        ("ElWouroud", "El Wouroud"),
-        ("Bougara", "Bougara"),
-        ("Afroun", "Afroun"),
-    ]
-    name = models.CharField(max_length=50, choices=REGION_CHOICES, unique=True)
-
-    def __str__(self):
-        return self.name
-
 class Client(models.Model):
     CLIENT_TYPE_CHOICES = [
         ("Corporate", "Corporate"),
@@ -49,13 +34,21 @@ class Client(models.Model):
         ("En Cours", "En Cours"),
         ("Payment Réglé", "Payment Réglé"),
     ]
-
+    REGION_CHOICES = [
+        ("Boufarik", "Boufarik"),
+        ("Mouzaia", "Mouzaia"),
+        ("Larbaa", "Larbaa"),
+        ("OuladYaich", "Oulad Yaich"),
+        ("ElWouroud", "El Wouroud"),
+        ("Bougara", "Bougara"),
+        ("Afroun", "Afroun"),
+    ]
     client_id = models.CharField(max_length=50, unique=True)
     name = models.CharField(max_length=255, default="Unknown")
     surname = models.CharField(max_length=255, default="Unknown")
     phone_number = models.CharField(max_length=15)
     client_type = models.CharField(max_length=20, choices=CLIENT_TYPE_CHOICES)
-    region = models.ForeignKey(Region, on_delete=models.CASCADE, related_name="clients")
+    region = models.CharField(max_length=50, choices=REGION_CHOICES)
     address = models.TextField(max_length=255, default="Unknown")
     observation = models.TextField(null=True, blank=True)
     total_amount = models.DecimalField(max_digits=15, decimal_places=2)

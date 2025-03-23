@@ -1,9 +1,9 @@
 from rest_framework import viewsets, filters
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .models import User, Client, Region, Facture, DateChange
+from .models import User, Client, Facture, DateChange
 from .serializers import (
-    UserSerializer, ClientSerializer, RegionSerializer,
+    UserSerializer, ClientSerializer,
     FactureSerializer, DateChangeSerializer
 )
 
@@ -16,12 +16,6 @@ class ClientViewSet(viewsets.ModelViewSet):
     serializer_class = ClientSerializer
     filter_backends = [filters.SearchFilter]  
     search_fields = ['client_id'] 
-    # def get_queryset(self):
-    #     user = self.request.user
-    #     if user.role.startswith("ResponsableDe"):
-    #         region_name = user.role.replace("ResponsableDe", "")
-    #         return Client.objects.filter(region__name__startswith=region_name)
-    #     return Client.objects.all()
 
 @action(detail=False, methods=['get'])
 def get_by_etat(self, request):
@@ -32,12 +26,6 @@ def get_by_etat(self, request):
     clients = Client.objects.filter(etat__iexact=etat_name).distinct()
     serializer = self.get_serializer(clients, many=True)
     return Response(serializer.data)
-
-
-
-class RegionViewSet(viewsets.ModelViewSet):
-    queryset = Region.objects.all()
-    serializer_class = RegionSerializer
 
 class FactureViewSet(viewsets.ModelViewSet):
     queryset = Facture.objects.all()
@@ -54,30 +42,9 @@ class FactureViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(factures, many=True)
         return Response(serializer.data)
 
-    # def get_queryset(self):
-    #     #Filter cases based on responsable 
-    #     user = self.request.user
-    #     if user.role.startswith("ResponsableDe"):
-    #         region_name = user.role.replace("ResponsableDe", "")
-    #         return Case.objects.filter(employee__region__name__startswith=region_name)
-    #     return Case.objects.all()
 
 
-    # def get_queryset(self):
-        # #Filter etats based on responsable
-        # user = self.request.user
-        # if user.role.startswith("ResponsableDe"):
-        #     region_name = user.role.replace("ResponsableDe", "")
-        #     return Etat.objects.filter(case__employee__region__name__startswith=region_name)
-        # return Etat.objects.all()
 
 class DateChangeViewSet(viewsets.ModelViewSet):
     queryset = DateChange.objects.all()
     serializer_class = DateChangeSerializer
-
-    def get_queryset(self):
-        user = self.request.user
-        # if user.role.startswith("ResponsableDe"):
-        #     region_name = user.role.replace("ResponsableDe", "")
-        #     return DateChange.objects.filter(case__employee__region__name__startswith=region_name)
-        # return DateChange.objects.all()

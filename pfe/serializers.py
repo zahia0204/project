@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, Client, Region, Facture,  DateChange
+from .models import User, Client, Facture,  DateChange
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -21,11 +21,6 @@ class ClientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Client
-        fields = '__all__'
-
-class RegionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Region
         fields = '__all__'
 
 class FactureSerializer(serializers.ModelSerializer):
