@@ -11,12 +11,15 @@ class UserSerializer(serializers.ModelSerializer):
         }
 
     def create(self, validated_data):
-        password = validated_data.pop('password', None)
-        user = super().create(validated_data)
-        if password:
-            user.set_password(password)
-            user.save()
-        return user
+        if 'password' in validated_data:
+            validated_data['password'] = make_password(validated_data['password']) 
+        return super().create(validated_data)
+    
+    def update(self, instance, validated_data):
+        if 'password' in validated_data:
+            validated_data['password'] = make_password(validated_data['password'])  
+        return super().update(instance, validated_data)
+
 class ClientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
