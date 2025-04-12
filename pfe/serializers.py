@@ -3,30 +3,32 @@ from .models import User, Client, Facture,  DateChange
 from django.contrib.auth.hashers import make_password
 
 class UserSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = User
-        fields = ['id', 'username', 'phone_number', 'role']
-        extra_kwargs = {
-            'password': {'write_only': True} 
-        }
+        fields = ['id', 'username', 'phone_number', 'role', 'password']
+        
 
     def create(self, validated_data):
-        if 'password' in validated_data:
-            validated_data['password'] = make_password(validated_data['password']) 
+        validated_data['password'] = make_password(validated_data['password'])
         return super().create(validated_data)
-    
-    def update(self, instance, validated_data):
-        if 'password' in validated_data:
-            validated_data['password'] = make_password(validated_data['password'])  
-        return super().update(instance, validated_data)
 
+    def update(self, instance, validated_data):
+        password = validated_data.pop('password', None)
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+
+        if password:
+            instance.password = make_password(password)
+
+        instance.save()
+        return instance
 class ClientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
         fields = '__all__'
-    def create(self, validated_data):
-        validated_data['password'] = make_password(validated_data['password']) 
-        return super().create(validated_data)
+
 
 class FactureSerializer(serializers.ModelSerializer):
     class Meta:

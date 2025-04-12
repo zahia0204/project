@@ -1,30 +1,21 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser , Group, Permission
+from django.contrib.auth.models import AbstractUser 
 
 class User(AbstractUser):
-    ADMIN = 1
-    RESPONSABLE_BOUFARIK = 2
-    RESPONSABLE_MOUZAIA = 3
-    RESPONSABLE_LARBAA = 4
-    RESPONSABLE_OULAD_YAICH = 5
-    RESPONSABLE_EL_WOUROUD = 6
-    RESPONSABLE_BOUGARA = 7
-    RESPONSABLE_AFROUN = 8
 
     ROLE_CHOICES = [
-        (ADMIN, "Admin"),
-        (RESPONSABLE_BOUFARIK, "Responsable de Boufarik"),
-        (RESPONSABLE_MOUZAIA, "Responsable de Mouzaia"),
-        (RESPONSABLE_LARBAA, "Responsable de Larbaa"),
-        (RESPONSABLE_OULAD_YAICH, "Responsable de Oulad Yaich"),
-        (RESPONSABLE_EL_WOUROUD, "Responsable de El Wouroud"),
-        (RESPONSABLE_BOUGARA, "Responsable de Bougara"),
-        (RESPONSABLE_AFROUN, "Responsable de Afroun"),
+        (1, "Admin"),
+        (2, "Responsable de Boufarik"),
+        (3, "Responsable de Mouzaia"),
+        (4, "Responsable de Larbaa"),
+        (5, "Responsable de Oulad Yaich"),
+        (6, "Responsable de El Wouroud"),
+        (7, "Responsable de Bougara"),
+        (8, "Responsable de Afroun"),
     ]
+    
     phone_number = models.CharField(max_length=15)  
-    role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES) 
-    groups = models.ManyToManyField(Group, related_name="user_groups", blank=True)
-    user_permissions = models.ManyToManyField(Permission, related_name="user_permissions", blank=True)
+    role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES , default=2) 
     def __str__(self):
         return f"{self.get_role_display()}: {self.username}"
 
@@ -32,7 +23,7 @@ class Client(models.Model):
     CLIENT_TYPE_CHOICES = [
         ("Corporate", "Corporate"),
         ("Residential", "Residential"),
-    ]
+        ]
 
     STATUS_CHOICES = [
         ("Non Traité", "Non Traité"),
