@@ -32,3 +32,9 @@ class FactureViewSet(viewsets.ModelViewSet):
 class DateChangeViewSet(viewsets.ModelViewSet):
     queryset = DateChange.objects.all()
     serializer_class = DateChangeSerializer
+#auth stufff here
+from .serializers import MyTokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
