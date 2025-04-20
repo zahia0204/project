@@ -31,7 +31,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'pfe',
     'rest_framework_simplejwt.token_blacklist',
-    'corsheaders',
+
 
 ]
 AUTH_USER_MODEL = 'pfe.User' 
