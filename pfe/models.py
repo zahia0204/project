@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser 
 
 class User(AbstractUser):
-
     ROLE_CHOICES = [
         (1, "Admin"),
         (2, "Responsable de Boufarik"),
@@ -13,9 +12,9 @@ class User(AbstractUser):
         (7, "Responsable de Bougara"),
         (8, "Responsable de Afroun"),
     ]
-    
     phone_number = models.CharField(max_length=15)  
     role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES , default=2) 
+
     def __str__(self):
         return f"{self.get_role_display()}: {self.username}"
 
@@ -23,8 +22,7 @@ class Client(models.Model):
     CLIENT_TYPE_CHOICES = [
         ("Corporate", "Corporate"),
         ("Residential", "Residential"),
-        ]
-
+    ]
     STATUS_CHOICES = [
         ("Non Traité", "Non Traité"),
         ("Décédé", "Décédé"),
@@ -65,9 +63,9 @@ class Client(models.Model):
                     new_etat=self.etat,
                 )
         super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.name} {self.surname} - {self.etat}"
-
 
 class Facture(models.Model):
     facture_id = models.CharField(max_length=50, unique=True)
@@ -76,12 +74,12 @@ class Facture(models.Model):
 
     def __str__(self):
         return f"Facture {self.facture_id} - {self.amount} DZD"
-    
+
 class DateChange(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name="date_changes", default=1)
     previous_etat = models.CharField(max_length=20, choices=Client.STATUS_CHOICES, default="Non Traité")
     new_etat = models.CharField(max_length=20, choices=Client.STATUS_CHOICES , default="Non Traité")
     changed_at = models.DateTimeField(auto_now_add=True)
+
     def __str__(self):
         return f"{self.client.name} {self.client.surname} | {self.previous_etat} ➝ {self.new_etat} on {self.changed_at}"
-
